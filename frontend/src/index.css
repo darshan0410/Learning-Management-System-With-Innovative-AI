@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+*{
+
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-image: url('https://getwallpapers.com/wallpaper/full/5/5/b/984532-new-color-hd-wallpaper-2560x1440.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+#loader {
+  height: 100vh;
+  width: 100%;
+  background-color: #000;
+  position: fixed;
+  z-index: 999;
+  inset: 0;
+  transition: all ease 0.7s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#loader h1 {
+  font-size: 4vw;
+  color: transparent;
+  background: linear-gradient(to right, orange, orangered);
+  -webkit-background-clip: text;
+  background-clip: text;
+  position: absolute;
+  opacity: 0;
+  animation: load 1s linear forwards;
+}
+
+#loader h1:nth-child(1) { animation-delay: 1s; }
+#loader h1:nth-child(2) { animation-delay: 2s; }
+#loader h1:nth-child(3) { animation-delay: 3s; }
+
+@keyframes load {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; }
+}
