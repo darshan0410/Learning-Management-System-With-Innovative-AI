@@ -55,46 +55,75 @@ function CreateLecture() {
    
   
   return (
-     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <div className="bg-white shadow-xl rounded-xl w-full max-w-2xl p-6">
+     <div className="min-h-screen bg-[#05050a] relative flex items-start sm:items-center justify-center p-4 sm:p-6 lg:p-8">
+      {/* Ambient Backdrops */}
+      <div className="pointer-events-none fixed inset-0 z-0">
+        <div className="absolute top-[10%] left-[10%] w-[320px] h-[320px] bg-amber-500/10 rounded-full blur-[100px]"></div>
+        <div className="absolute bottom-[10%] right-[10%] w-[420px] h-[420px] bg-orange-500/10 rounded-full blur-[120px]"></div>
+      </div>
+
+      <div className="bg-[#0c0c14]/80 backdrop-blur-xl border border-white/5 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)] w-full max-w-3xl p-6 sm:p-10 relative z-10 mt-10 sm:mt-0">
+        
         {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-semibold text-gray-800 mb-1">Let’s Add a Lecture</h1>
-          <p className="text-sm text-gray-500">Enter the title and add your video lectures to enhance your course content.</p>
+        <div className="mb-8 border-b border-white/5 pb-6">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-100 flex items-center gap-3">
+             <span className="text-orange-500">➕</span> Let’s Add a Lecture
+          </h1>
+          <p className="text-sm text-gray-400 mt-2">Enter a descriptive title to add new modular video lectures to your course.</p>
         </div>
 
         {/* Input */}
-        <input
-          type="text"
-          placeholder="e.g. Introduction to Mern Stack"
-          className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 mb-4"
-          onChange={(e)=>setLectureTitle(e.target.value)}
-          value={lectureTitle}
-        />
+        <div className="mb-8">
+          <label className="block text-sm font-semibold text-gray-400 mb-2">Lecture Title</label>
+          <input
+            type="text"
+            placeholder="e.g. Introduction to MERN Stack"
+            className="w-full bg-[#05050a] border border-white/10 text-gray-100 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 outline-none transition-all placeholder-gray-600"
+            onChange={(e)=>setLectureTitle(e.target.value)}
+            value={lectureTitle}
+          />
+        </div>
 
         {/* Buttons */}
-        <div className="flex gap-4 mb-6">
-          <button className="flex items-center gap-2 px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300 text-sm font-medium" onClick={()=>navigate(`/addcourses/${courseId}`)
-          }>
+        <div className="flex flex-col sm:flex-row gap-4 mb-10 pb-10 border-b border-white/5">
+          <button className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white/5 border border-white/10 hover:border-orange-500/40 hover:bg-orange-500/10 text-gray-300 hover:text-orange-400 font-medium transition-all w-full sm:w-auto" onClick={()=>navigate(`/addcourses/${courseId}`)}>
             <FaArrowLeft /> Back to Course
           </button>
-          <button className="px-5 py-2 rounded-md bg-[black] text-white hover:bg-gray-600 transition-all text-sm font-medium shadow" disabled={loading} onClick={createLectureHandler}>
-           {loading?<ClipLoader size={30} color='white'/>: "+ Create Lecture"}
+          <button className="flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 text-black hover:shadow-[0_0_20px_rgba(249,115,22,0.4)] hover:scale-[1.02] transition-all font-bold w-full sm:w-auto" disabled={loading} onClick={createLectureHandler}>
+           {loading?<ClipLoader size={20} color='black'/>: "+ Create Lecture"}
           </button>
         </div>
 
         {/* Lecture List */}
-         <div className="space-y-2">
-          {lectureData.map((lecture, index) => (
-            <div key={index} className="bg-gray-100 rounded-md flex justify-between items-center p-3 text-sm font-medium text-gray-700">
-              <span>Lecture - {index + 1}: {lecture.lectureTitle}</span>
-              <FaEdit className="text-gray-500 hover:text-gray-700 cursor-pointer"  onClick={()=>navigate(`/editlecture/${courseId}/${lecture._id}`)}/>
+         <div>
+          <h2 className="text-lg font-bold text-gray-100 mb-4 flex items-center gap-2">
+            <span className="text-orange-500">📚</span> Existing Lectures
+          </h2>
+          {lectureData.length === 0 ? (
+             <div className="text-center bg-[#0a0a12] p-8 rounded-2xl border border-white/5 text-gray-500 text-sm">
+                No lectures created for this course yet.
+             </div>
+          ) : (
+            <div className="space-y-3 max-h-[300px] overflow-y-auto custom-scrollbar pr-2">
+              {lectureData.map((lecture, index) => (
+                <div key={index} className="bg-[#0a0a12] border border-white/5 rounded-2xl flex justify-between items-center p-4 text-sm font-medium hover:bg-white/5 hover:border-white/10 transition-colors group">
+                  <span className="text-gray-300">
+                     <span className="text-orange-400 font-bold mr-2">{(index + 1).toString().padStart(2, '0')}</span> 
+                     {lecture.lectureTitle}
+                  </span>
+                  <button 
+                    className="p-2 bg-white/5 border border-white/10 hover:border-orange-500/40 hover:bg-orange-500/10 hover:text-orange-400 rounded-lg transition-colors text-gray-500"
+                    onClick={()=>navigate(`/editlecture/${courseId}/${lecture._id}`)}
+                  >
+                    <FaEdit />
+                  </button>
+                </div>
+              ))}
             </div>
-          ))}
+          )}
         </div> 
       </div>
     </div>
-    
   )
 }
 

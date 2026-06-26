@@ -1,6 +1,6 @@
 import express from "express"
 import dotenv from "dotenv"
-import connectDb from "./configs/db.js"
+import connectDB from "./configs/db.js"
 import authRouter from "./routes/authRoute.js"
 import cookieParser from "cookie-parser"
 import cors from "cors"
@@ -9,15 +9,17 @@ import courseRouter from "./routes/courseRoute.js"
 import paymentRouter from "./routes/paymentRoute.js"
 import aiRouter from "./routes/aiRoute.js"
 import reviewRouter from "./routes/reviewRoute.js"
+import chatRoutes from "./routes/chatRoutes.js"
+import interviewRoutes from "./routes/interviewRoutes.js"
 dotenv.config()
 
-let port = process.env.PORT
+let port = process.env.PORT || 5000;
 let app = express()
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-    origin:"http://localhost:5173",
-    credentials:true
+    origin: [process.env.FRONTEND_URL, "http://localhost:5173", "http://localhost:5174"],
+    credentials: true
 }))
 app.use("/api/auth", authRouter)
 app.use("/api/user", userRouter)
@@ -25,6 +27,9 @@ app.use("/api/course", courseRouter)
 app.use("/api/payment", paymentRouter)
 app.use("/api/ai", aiRouter)
 app.use("/api/review", reviewRouter)
+app.use('/api/chat', chatRoutes);
+app.use('/api/interview', interviewRoutes);
+
 
 
 app.get("/" , (req,res)=>{
@@ -33,6 +38,6 @@ app.get("/" , (req,res)=>{
 
 app.listen(port , ()=>{
     console.log("Server Started")
-    connectDb()
+    connectDB()
 })
 

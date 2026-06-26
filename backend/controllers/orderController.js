@@ -15,18 +15,28 @@ export const createOrder = async (req, res) => {
     const course = await Course.findById(courseId);
     if (!course) return res.status(404).json({ message: "Course not found" });
 
+    let amountValue = Number(course.price);
+
+    if (isNaN(amountValue) || amountValue <= 0) {
+      return res.status(400).json({ message: "Invalid course price. Ensure the course has a defined price greater than 0 before enrolling." });
+    }
+
     const options = {
-      amount: course.price * 100, // in paisa
+      amount: Math.round(amountValue * 100), // in paisa, ensure integers
       currency: 'INR',
-      receipt: `${courseId}.toString()`,
+      receipt: courseId.toString(),
     };
 
     const order = await razorpayInstance.orders.create(options);
     return res.status(200).json(order);
   } catch (err) {
-    console.log(err)
-    return res.status(500).json({ message: `Order creation failed ${err}` });
-
+    console.error("Order Creation Error:", err);
+    let errorMessage = "Order creation failed";
+    if (err && err.error && err.error.description) {
+        errorMessage = err.error.description;
+        return res.status(400).json({ message: errorMessage });
+    }
+    return res.status(500).json({ message: err.message || errorMessage });
   }
 };
 

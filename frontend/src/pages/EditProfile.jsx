@@ -45,43 +45,60 @@ function EditProfile() {
       
      }
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-10">
-      <div className="bg-white rounded-2xl shadow-lg p-8 max-w-xl w-full relative">
-        <FaArrowLeftLong  className='absolute top-[5%] left-[5%] w-[22px] h-[22px] cursor-pointer' onClick={()=>navigate("/profile")}/>
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Edit Profile</h2>
+    <div className="min-h-screen bg-[#05050a] relative flex items-center justify-center p-4">
+      {/* ambient background glow */}
+      <div className="pointer-events-none fixed inset-0 z-0">
+        <div className="absolute top-[-10%] left-[10%] w-[420px] h-[420px] bg-amber-500/10 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-[-10%] right-[10%] w-[420px] h-[420px] bg-orange-500/10 rounded-full blur-[120px]"></div>
+      </div>
 
-        <form  className="space-y-5" onSubmit={(e)=>e.preventDefault()}>
+      <div className="bg-[#0c0c14]/80 backdrop-blur-xl border border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.5)] rounded-3xl p-8 md:p-10 max-w-xl w-full relative z-10">
+        <button 
+          onClick={()=>navigate("/profile")}
+          className="absolute top-6 left-6 md:top-8 md:left-8 w-10 h-10 rounded-xl bg-[#0f0f18] border border-white/10 flex items-center justify-center text-gray-400 hover:text-orange-400 hover:border-orange-500/40 transition group"
+        >
+          <FaArrowLeftLong className="group-hover:-translate-x-1 transition-transform" />
+        </button>
+        <h2 className="text-2xl font-bold text-center text-gray-100 mb-8 mt-2">Edit Profile</h2>
+
+        <form  className="space-y-6" onSubmit={(e)=>e.preventDefault()}>
           {/* Profile Photo */}
-          
            <div className="flex flex-col items-center text-center">
-          {userData.photoUrl ? <img
-            src={userData?.photoUrl}
-            alt=""
-            className="w-24 h-24 rounded-full object-cover border-4 border-[black]"
-          /> : <div className='w-24 h-24 rounded-full text-white flex items-center justify-center text-[30px] border-2 bg-black  border-white cursor-pointer'>
-         {userData?.name.slice(0,1).toUpperCase()}
-          </div>}
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-amber-400 rounded-full blur px-[2px] opacity-70"></div>
+              {userData.photoUrl ? (
+                <img
+                  src={userData?.photoUrl}
+                  alt={userData.name}
+                  className="w-28 h-28 rounded-full object-cover border-4 border-[#0c0c14] relative z-10"
+                />
+              ) : (
+                <div className='w-28 h-28 rounded-full text-[#0c0c14] flex items-center justify-center text-4xl font-bold bg-gradient-to-br from-orange-500 to-amber-400 border-4 border-[#0c0c14] relative z-10 shadow-[0_0_20px_rgba(249,115,22,0.4)]'>
+                  {userData?.name.slice(0,1).toUpperCase()}
+                </div>
+              )}
+            </div>
           </div>
+
           <div>
-            <label className="text-sm font-medium text-gray-700">Select Avatar</label>
-            <input
-              type="file"
-              name="photoUrl"
-            
-              placeholder="Photo URL"
-              className="w-full px-4 py-2 border rounded-md text-sm "
-              onChange={(e)=>setPhotoUrl(e.target.files[0])}
-            />
+            <label className="block text-sm font-semibold text-gray-400 mb-2">Select Avatar</label>
+            <div className="relative">
+                <input
+                  type="file"
+                  name="photoUrl"
+                  className="w-full bg-[#05050a] border border-white/10 rounded-xl p-2 file:mr-4 file:py-2.5 file:px-5 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-white/10 file:text-white hover:file:bg-white/20 transition-all text-gray-400 cursor-pointer"
+                  onChange={(e)=>setPhotoUrl(e.target.files[0])}
+                />
+            </div>
           </div>
 
           {/* Name */}
           <div>
-            <label className="text-sm font-medium text-gray-700">Full Name</label>
+            <label className="block text-sm font-semibold text-gray-400 mb-2">Full Name</label>
             <input
               type="text"
               name="name"
-              
-              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[black] placeholder:text-black"
+              className="w-full bg-[#05050a] border border-white/10 text-gray-100 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 outline-none transition-all placeholder-gray-600"
               placeholder={userData.name}
               onChange={(e)=>setName(e.target.value)}
               value={name}
@@ -90,26 +107,21 @@ function EditProfile() {
 
           {/* Email (read-only) */}
           <div>
-            <label className="text-sm font-medium text-gray-700">Email</label>
+            <label className="block text-sm font-semibold text-gray-400 mb-2">Email</label>
             <input
               type="email"
-              
               readOnly
-              className="w-full mt-1 px-4 py-2 bg-gray-100 border border-gray-300 rounded-md text-gray-600 placeholder:text-black"
+              className="w-full bg-white/5 border border-white/5 text-gray-500 px-4 py-3.5 rounded-xl outline-none cursor-not-allowed"
               placeholder={userData.email}
             />
           </div>
 
-         
-
           {/* Description */}
           <div>
-            <label className="text-sm font-medium text-gray-700">Description</label>
+            <label className="block text-sm font-semibold text-gray-400 mb-2">Description</label>
             <textarea
               name="description"
-             
-              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md resize-none focus:ring-2 focus:ring-[black]"
-              rows={3}
+              className="w-full bg-[#05050a] border border-white/10 text-gray-100 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 outline-none transition-all placeholder-gray-600 resize-none h-32"
               placeholder="Tell us about yourself"
               onChange={(e)=>setDescription(e.target.value)}
               value={description}
@@ -117,12 +129,15 @@ function EditProfile() {
           </div>
 
           {/* Save Button */}
-          <button
-            type="submit"
-            className="w-full bg-[black] active:bg-[#454545] text-white py-2 rounded-md font-medium transition cursor-pointer" disabled={loading} onClick={updateProfile}
-          >
-            {loading ? <ClipLoader size={30} color='white'/> : "Save Changes"}
-          </button>
+          <div className="pt-4">
+             <button
+               type="submit"
+               className="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-black font-bold py-3.5 rounded-xl hover:shadow-[0_0_20px_rgba(249,115,22,0.4)] hover:scale-[1.02] transition-all flex items-center justify-center gap-2" 
+               disabled={loading} onClick={updateProfile}
+             >
+               {loading ? <ClipLoader size={24} color='black'/> : "Save Changes"}
+             </button>
+          </div>
         </form>
       </div>
     </div>

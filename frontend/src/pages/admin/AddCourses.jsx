@@ -132,102 +132,138 @@ const editCourseHandler = async () => {
 
     
   return (
-     <div className="max-w-5xl mx-auto p-6 mt-10 bg-white rounded-lg shadow-md">
+    <div className="min-h-screen bg-[#05050a] relative p-6 mt-10 md:p-8 lg:p-12">
+       {/* Ambient Backdrops */}
+       <div className="pointer-events-none fixed inset-0 z-0">
+        <div className="absolute top-[-10%] left-[10%] w-[320px] h-[320px] bg-amber-500/10 rounded-full blur-[100px]"></div>
+        <div className="absolute bottom-[-10%] right-[10%] w-[420px] h-[420px] bg-orange-500/10 rounded-full blur-[120px]"></div>
+      </div>
+
+     <div className="max-w-5xl mx-auto bg-[#0c0c14]/80 backdrop-blur-xl border border-white/5 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)] p-6 md:p-10 relative z-10">
         
       {/* Top Bar */}
-      <div className="flex items-center justify-center gap-[20px] md:justify-between flex-col md:flex-row  mb-6 relative">
-        <FaArrowLeftLong  className='top-[-20%] md:top-[20%] absolute left-[0] md:left-[2%] w-[22px] h-[22px] cursor-pointer' onClick={()=>navigate("/courses")}/>
-        <h2 className="text-2xl font-semibold md:pl-[60px]">Add detail information regarding course</h2>
-        <div className="space-x-2 space-y-2 ">
-          <button className="bg-black text-white px-4 py-2 rounded-md" onClick={()=>navigate(`/createlecture/${selectedCourse?._id}`)}>Go to lectures page</button>
-          
+      <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-10 pb-6 border-b border-white/5 relative">
+        <div className="flex items-center gap-4 w-full md:w-auto">
+          <button 
+            onClick={()=>navigate("/courses")}
+            className="w-10 h-10 shrink-0 rounded-xl bg-black/60 border border-white/10 flex items-center justify-center text-gray-400 hover:text-orange-400 hover:border-orange-500/40 transition group"
+          >
+            <FaArrowLeftLong className="group-hover:-translate-x-1 transition-transform" />
+          </button>
+          <div>
+            <h2 className="text-2xl font-bold text-gray-100">Course Information</h2>
+            <p className="text-sm text-gray-500">Edit metadata and configure access</p>
+          </div>
+        </div>
+        <div className="flex gap-3">
+          <button className="bg-white/5 border border-white/10 text-orange-400 px-6 py-2.5 rounded-xl hover:bg-orange-500/10 hover:border-orange-500/30 transition-all font-medium" onClick={()=>navigate(`/createlecture/${selectedCourse?._id}`)}>Configure Lectures</button>
         </div>
       </div>
 
       {/* Form Box */}
-      <div className="bg-gray-50 p-6 rounded-md">
-        <h3 className="text-lg font-medium mb-4">Basic Course Information</h3>
-        <div className="space-x-2 space-y-2 ">
-          {!isPublished? <button className="bg-green-100 text-green-600 px-4 py-2 rounded-md border-1" onClick={()=>setIsPublished(prev=>!prev)}>Click to Publish</button> 
-          :<button className="bg-red-100 text-red-600 px-4 py-2 rounded-md border-1" onClick={()=>setIsPublished(prev=>!prev)}>Click to UnPublish</button>
-          }
-          <button className="bg-red-600 text-white px-4 py-2 rounded-md" disabled={loading} onClick={removeCourse}>{loading?<ClipLoader size={30} color='white'/> :"Remove Course"}</button>
+      <div className="bg-[#0a0a12] p-6 md:p-8 rounded-2xl border border-white/5">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+          <h3 className="text-xl font-bold text-gray-100 flex items-center gap-2">
+            <span className="text-orange-500">⚙</span> Basic Details
+          </h3>
+          <div className="flex gap-3">
+            {!isPublished ? 
+              <button className="bg-green-500/10 text-green-400 border border-green-500/20 px-6 py-2 rounded-xl hover:bg-green-500/20 transition-colors font-medium" onClick={()=>setIsPublished(prev=>!prev)}>Publish Course</button> 
+            : 
+              <button className="bg-amber-500/10 text-amber-500 border border-amber-500/30 px-6 py-2 rounded-xl hover:bg-amber-500/20 transition-colors font-medium" onClick={()=>setIsPublished(prev=>!prev)}>Unpublish Course</button>
+            }
+            <button className="bg-red-500/10 text-red-500 border border-red-500/20 px-6 py-2 rounded-xl hover:bg-red-500/20 transition-colors font-medium flex items-center justify-center w-[160px]" disabled={loading} onClick={removeCourse}>
+              {loading ? <ClipLoader size={20} color='currentColor'/> : "Delete Course"}
+            </button>
+          </div>
         </div>
 
         <form className="space-y-6" onSubmit={(e)=>e.preventDefault()}>
           {/* Title */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
-            <input type="text" placeholder="Course Title" className="w-full border px-4 py-2 rounded-md" onChange={(e)=>setTitle(e.target.value)} value={title}/>
+            <label className="block text-sm font-semibold text-gray-400 mb-2">Title</label>
+            <input type="text" placeholder="Course Title" className="w-full bg-[#05050a] border border-white/10 text-gray-100 px-4 py-3 rounded-xl focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 outline-none transition-all placeholder-gray-600" onChange={(e)=>setTitle(e.target.value)} value={title}/>
           </div>
 
           {/* Subtitle */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Subtitle</label>
-            <input type="text" placeholder="Subtitle" className="w-full border px-4 py-2 rounded-md" onChange={(e)=>setSubTitle(e.target.value)} value={subTitle} />
+            <label className="block text-sm font-semibold text-gray-400 mb-2">Subtitle</label>
+            <input type="text" placeholder="Engaging descriptive subtitle" className="w-full bg-[#05050a] border border-white/10 text-gray-100 px-4 py-3 rounded-xl focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 outline-none transition-all placeholder-gray-600" onChange={(e)=>setSubTitle(e.target.value)} value={subTitle} />
           </div>
 
           {/* Description */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-            <textarea placeholder="Course description" className="w-full border px-4 py-2 rounded-md h-24 resize-none" onChange={(e)=>setDescription(e.target.value)} value={description}></textarea>
+            <label className="block text-sm font-semibold text-gray-400 mb-2">Description</label>
+            <textarea placeholder="Extensive course description" className="w-full bg-[#05050a] border border-white/10 text-gray-100 px-4 py-3 rounded-xl focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 outline-none transition-all placeholder-gray-600 h-32 resize-none" onChange={(e)=>setDescription(e.target.value)} value={description}></textarea>
           </div>
 
           {/* Category, Level, Price - Flex row */}
-          <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
+          <div className="flex flex-col sm:flex-row gap-6">
             {/* Category */}
             <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-              <select className="w-full border px-4 py-2 rounded-md bg-white" onChange={(e)=>setCategory(e.target.value)} value={category}>
-                <option value="">Select Category</option>
-                 <option value="App Development">App Development</option>
-                             <option value="AI/ML">AI/ML</option>
-                            <option value="AI Tools">AI Tools
-                            </option>
-                             <option value="Data Science">Data Science</option>
-                            <option value="Data Analytics">Data Analytics</option>
-                            <option value="Ethical Hacking">Ethical Hacking</option>
-                            <option value="UI UX Designing">UI UX Designing</option>
-                            <option value="Web Development">Web Development</option>
-                            <option value="Others">Others</option>
-              </select>
+              <label className="block text-sm font-semibold text-gray-400 mb-2">Category</label>
+              <div className="relative">
+                <select className="w-full bg-[#05050a] border border-white/10 text-gray-100 px-4 py-3 rounded-xl focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 outline-none transition-all appearance-none cursor-pointer" onChange={(e)=>setCategory(e.target.value)} value={category}>
+                  <option value="" disabled className="text-gray-600">Select Category</option>
+                  <option value="App Development" className="bg-[#05050a]">App Development</option>
+                  <option value="AI/ML" className="bg-[#05050a]">AI/ML</option>
+                  <option value="AI Tools" className="bg-[#05050a]">AI Tools</option>
+                  <option value="Data Science" className="bg-[#05050a]">Data Science</option>
+                  <option value="Data Analytics" className="bg-[#05050a]">Data Analytics</option>
+                  <option value="Ethical Hacking" className="bg-[#05050a]">Ethical Hacking</option>
+                  <option value="UI UX Designing" className="bg-[#05050a]">UI UX Designing</option>
+                  <option value="Web Development" className="bg-[#05050a]">Web Development</option>
+                  <option value="Others" className="bg-[#05050a]">Others</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-orange-500">▼</div>
+              </div>
             </div>
 
             {/* Level */}
             <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Course Level</label>
-              <select className="w-full border px-4 py-2 rounded-md bg-white" onChange={(e)=>setLevel(e.target.value)} value={level} >
-                <option value="">Select Level</option>
-                <option value="Beginner">Beginner</option>
-                <option value="Intermediate">Intermediate</option>
-                <option value="Advanced">Advanced</option>
-              </select>
+              <label className="block text-sm font-semibold text-gray-400 mb-2">Course Level</label>
+              <div className="relative">
+                <select className="w-full bg-[#05050a] border border-white/10 text-gray-100 px-4 py-3 rounded-xl focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 outline-none transition-all appearance-none cursor-pointer" onChange={(e)=>setLevel(e.target.value)} value={level} >
+                  <option value="" disabled className="text-gray-600">Select Level</option>
+                  <option value="Beginner" className="bg-[#05050a]">Beginner</option>
+                  <option value="Intermediate" className="bg-[#05050a]">Intermediate</option>
+                  <option value="Advanced" className="bg-[#05050a]">Advanced</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-orange-500">▼</div>
+              </div>
             </div>
 
             {/* Price */}
             <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Price (INR)</label>
-              <input type="number" placeholder="₹" className="w-full border px-4 py-2 rounded-md" onChange={(e)=>setPrice(e.target.value)} value={price} />
+              <label className="block text-sm font-semibold text-gray-400 mb-2">Price (INR)</label>
+              <input type="number" placeholder="₹ 0.00" className="w-full bg-[#05050a] border border-white/10 text-gray-100 px-4 py-3 rounded-xl focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 outline-none transition-all placeholder-gray-600" onChange={(e)=>setPrice(e.target.value)} value={price} />
             </div>
           </div>
 
           {/* Thumbnail */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Course Thumbnail</label>
-            <input type="file" ref={thumb} hidden className="w-full border px-4 py-2 rounded-md" onChange={handleThumbnail} accept='image/*' />
+          <div className="pt-4 border-t border-white/5">
+            <label className="block text-sm font-semibold text-gray-400 mb-4">Course Thumbnail</label>
+            <input type="file" ref={thumb} hidden onChange={handleThumbnail} accept='image/*' />
+            
+            <div className='relative w-[320px] aspect-video group cursor-pointer overflow-hidden rounded-xl border border-white/10 shadow-xl ring-1 ring-white/5' onClick={()=>thumb.current.click()}>
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity z-10 flex items-center justify-center">
+                <div className="bg-orange-500 text-black p-3 rounded-full shadow-[0_0_20px_rgba(249,115,22,0.4)]">
+                   <MdEdit className='w-6 h-6' />
+                </div>
+              </div>
+              <img src={frontendImage} alt="" className='w-full h-full object-cover bg-black' />
+            </div>
+            <p className="text-xs text-gray-500 mt-3">Click on image to upload a new thumbnail. Recomended size: 1280x720</p>
           </div>
 
-          <div  className='relative w-[300px]
-          h-[170px]'><img src={frontendImage} alt="" className='w-[100%]
-          h-[100%] border-1 border-black rounded-[5px]' onClick={()=>thumb.current.click()} />
-          <MdEdit className='w-[20px] h-[20px] absolute top-2 right-2  ' onClick={()=>thumb.current.click()}/> </div>
-
-          <div className='flex items-center justify-start gap-[15px]'>
-            <button className='bg-[#e9e8e8] hover:bg-red-200 text-black border-1 border-black cursor-pointer px-4 py-2 rounded-md' onClick={()=>navigate("/courses")}>Cancel</button>
-            <button className='bg-black text-white px-7 py-2 rounded-md hover:bg-gray-500 cursor-pointer' disabled={loading} onClick={editCourseHandler}>{loading ? <ClipLoader size={30} color='white'/>:"Save"}</button>
-            
+          <div className='flex items-center justify-start gap-4 pt-8'>
+            <button className='bg-transparent text-gray-400 hover:text-white border border-white/10 hover:bg-white/5 px-8 py-3 rounded-xl transition-colors font-medium' onClick={()=>navigate("/courses")}>Cancel</button>
+            <button className='bg-gradient-to-r from-orange-500 to-amber-500 text-black px-10 py-3 rounded-xl hover:shadow-[0_0_20px_rgba(249,115,22,0.4)] transition-all font-bold flex items-center justify-center min-w-[120px]' disabled={loading} onClick={editCourseHandler}>
+              {loading ? <ClipLoader size={24} color='black'/> : "Save Changes"}
+            </button>
           </div>
         </form>
+      </div>
       </div>
     </div>
   )
